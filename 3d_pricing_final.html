@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تسعيرة مجسمات 3D</title>
+    <style>
+        body { font-family: Arial; direction: rtl; background-color: #f4f4f4; padding: 20px; }
+        h1 { text-align: center; }
+        select, table { width: 100%; margin-top: 20px; }
+        table { border-collapse: collapse; background: white; }
+        th, td { padding: 10px; border: 1px solid #999; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>برنامج تسعير المجسمات ثلاثية الأبعاد</h1>
+    <label for="height">اختر الارتفاع (سم):</label>
+    <select id="height" onchange="updateTable()">
+        <option value="">-- اختر --</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="35">35</option>
+        <option value="40">40</option>
+        <option value="45">45</option>
+        <option value="50">50</option>
+    </select>
+
+    <table id="priceTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>الفئة</th>
+                <th>ملف STL</th>
+                <th>الطباعة</th>
+                <th>التلوين</th>
+                <th>النسبة %</th>
+                <th>الربح</th>
+                <th>السعر النهائي</th>
+                <th>أقل ربح ممكن</th>
+                <th>التكلفة + أقل ربح</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+
+    <script>
+        const data = {
+            "15": [
+                ["بسيط", 13000, 8000, 15000, "25%", 35000, 60650, 25000, 50650],
+                ["متوسط", 13000, 12000, 15000, "25%", 35000, 78000, 30000, 66000],
+                ["معقد", 13000, 15000, 20000, "25%", 45000, 105000, 35000, 90000]
+            ],
+            "20": [
+                ["بسيط", 13000, 12000, 15000, "25%", 45000, 87500, 35000, 75500],
+                ["متوسط", 13000, 20000, 15000, "25%", 45000, 115000, 35000, 100000],
+                ["معقد", 13000, 30000, 20000, "25%", 55000, 147500, 40000, 130000]
+            ],
+            "25": [
+                ["بسيط", 13000, 17000, 20000, "20%", 60000, 120000, 45000, 105000],
+                ["متوسط", 13000, 25000, 25000, "20%", 75000, 150600, 55000, 130600],
+                ["معقد", 13000, 45000, 30000, "20%", 100000, 205600, 70000, 185600]
+            ],
+            "30": [
+                ["بسيط", 13000, 30000, 25000, "20%", 80000, 175600, 60000, 155600],
+                ["متوسط", 13000, 40000, 35000, "20%", 130000, 269600, 90000, 249600],
+                ["معقد", 13000, 70000, 45000, "20%", 180000, 366600, 120000, 346600]
+            ],
+            "35": [
+                ["بسيط", 13000, 35000, 30000, "15%", 100000, 205600, 70000, 185600],
+                ["متوسط", 13000, 60000, 45000, "15%", 170000, 372600, 110000, 352600],
+                ["معقد", 13000, 100000, 55000, "15%", 225000, 545600, 150000, 525600]
+            ],
+            "40": [
+                ["بسيط", 13000, 45000, 35000, "15%", 120000, 273600, 90000, 253600],
+                ["متوسط", 13000, 75000, 60000, "15%", 200000, 471600, 130000, 451600],
+                ["معقد", 13000, 120000, 80000, "15%", 280000, 743600, 180000, 723600]
+            ],
+            "45": [
+                ["بسيط", 13000, 55000, 45000, "10%", 140000, 397600, 110000, 377600],
+                ["متوسط", 13000, 90000, 70000, "10%", 250000, 595600, 160000, 575600],
+                ["معقد", 13000, 140000, 100000, "10%", 320000, 967600, 220000, 947600]
+            ],
+            "50": [
+                ["بسيط", 13000, 65000, 55000, "10%", 160000, 483600, 130000, 463600],
+                ["متوسط", 13000, 110000, 85000, "10%", 300000, 737600, 180000, 717600],
+                ["معقد", 13000, 170000, 130000, "10%", 400000, 1177600, 250000, 1157600]
+            ]
+        };
+
+        function updateTable() {
+            const height = document.getElementById("height").value;
+            const table = document.getElementById("priceTable");
+            const tbody = document.getElementById("tableBody");
+            tbody.innerHTML = "";
+
+            if (!height || !data[height]) {
+                table.style.display = "none";
+                return;
+            }
+
+            data[height].forEach(row => {
+                const tr = document.createElement("tr");
+                row.forEach(cell => {
+                    const td = document.createElement("td");
+                    td.textContent = cell.toLocaleString();
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            table.style.display = "table";
+        }
+    </script>
+</body>
+</html>
